@@ -32,10 +32,14 @@
 			},
 		];
 	}
+
+	function handleRemoveTodo(event) {
+		todos = todos.filter((t) => t.id !== event.detail.id);
+	}
 </script>
 
 <!-- If we bind instead of just passing "todos" it will sync and update here when it is updated in the component -->
-<TodoList {todos} on:addtodo={handleAddTodo} />
+<TodoList {todos} on:addtodo={handleAddTodo} on:removetodo={handleRemoveTodo} />
 
 <style>
 </style>
