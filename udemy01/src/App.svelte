@@ -19,18 +19,15 @@
 			completed: true,
 		},
 	];
-	$: console.log(todos);
+
+	function handleAddTodo(event) {
+		event.preventDefault();
+		console.log(event.detail.title);
+	}
 </script>
 
-<h2>{todos.length} Todos</h2>
 <!-- If we bind instead of just passing "todos" it will sync and update here when it is updated in the component -->
-<TodoList bind:todos />
-
-<button
-	on:click={() => {
-		todos = [];
-	}}>Clear todos</button
->
+<TodoList {todos} on:addtodo={handleAddTodo} />
 
 <style>
 </style>

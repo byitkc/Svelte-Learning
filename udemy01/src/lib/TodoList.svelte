@@ -1,33 +1,31 @@
 <script>
     import Button from "./Button.svelte";
-    import { v4 as uuid } from "uuid";
+    import { createEventDispatcher } from "svelte";
 
     export let todos = [];
     let inputText = "";
 
+    const dispatch = createEventDispatcher();
+
     function handleAddTodo() {
-        if (!inputText) return;
-        // Add the input text to the todos array
-        todos = [
-            ...todos,
+        const isNotCancelled = dispatch(
+            "addtodo",
             {
-                id: uuid(),
                 title: inputText,
-                completed: false,
             },
-        ];
-        // Clear the input after submission
-        inputText = "";
+            { cancelable: true }
+        );
+        if (isNotCancelled) {
+            inputText = "";
+        }
     }
 </script>
 
 <div class="todo-list-wrapper">
     <ul>
         {#each todos as { id, title }, index (id)}
-            <!-- We can define a variable inside of our loop, it can only be used as a child (ex. of a each or if) -->
             {@const number = index + 1}
-            <!-- Then we can use that variable -->
-            <li>{number} - {title}</li>
+            <li>{number}- {title}</li>
         {/each}
     </ul>
     <form class="add-todo-form" on:submit|preventDefault={handleAddTodo}>
