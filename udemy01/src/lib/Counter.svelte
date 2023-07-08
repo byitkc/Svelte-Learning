@@ -1,29 +1,23 @@
 <!-- When rendered, the script only runs once! -->
 <script>
-	let count1 = 0;
-	let count2 = 0;
+	// This is how we can use props in our components, if we don't define a default it will be required to be passed when calling the component
+	export let initialCount;
+	// If we want to, we can set a default value for our props so we don't have to pass it explicitly when calling the component
+	export let maxCount = undefined;
 
-	function setCount2(x) {
-		count2 = x;
-	}
+	// We can also use the props that we pass using $$props, and the rest of the props that we don't use in our component using $$restProps
+	// Recommended to not use these unless necessary as they can cause performance problems
+	console.log($$props, $$restProps);
 
-	// Reactive statements run whenever the values they depend on change
+	let count = initialCount;
 
-	// Not going to work
-	$: setCount2(count1);
-	// Order of statements matters, so this will work, but if this statement is above the previous one, it won't work
-	$: string = `Count2 is ${count2}`;
-
-	// End Reactive statements
-
-	function increment1() {
-		count1 += 1;
+	function increment() {
+		if (count === maxCount) return;
+		count += 1;
 	}
 </script>
 
-<button on:click={increment1}>Clicks: {count1}</button>
-
-<h3>{string}</h3>
+<button on:click={increment}>Clicks: {count}</button>
 
 <style>
 	button {
