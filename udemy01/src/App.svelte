@@ -2,6 +2,8 @@
 	import TodoList from "./lib/TodoList.svelte";
 	import { v4 as uuid } from "uuid";
 
+	let todoList;
+
 	let todos = [
 		{
 			id: uuid(),
@@ -21,16 +23,19 @@
 	];
 
 	function handleAddTodo(event) {
-		// event.preventDefault();
-		console.log(event.detail.title);
-		todos = [
-			...todos,
-			{
-				id: uuid(),
-				title: event.detail.title,
-				completed: false,
-			},
-		];
+		event.preventDefault();
+		setTimeout(() => {
+			todos = [
+				...todos,
+				{
+					id: uuid(),
+					title: event.detail.title,
+					completed: false,
+				},
+			];
+			// Clear our input
+			todoList.clearInput();
+		}, 1000);
 	}
 
 	function handleRemoveTodo(event) {
@@ -53,10 +58,17 @@
 <!-- If we bind instead of just passing "todos" it will sync and update here when it is updated in the component -->
 <TodoList
 	{todos}
+	bind:this={todoList}
 	on:addtodo={handleAddTodo}
 	on:removetodo={handleRemoveTodo}
 	on:toggletodo={handleToggleTodo}
 />
+
+<button
+	on:click={() => {
+		todoList.focusInput();
+	}}>Focus input</button
+>
 
 <style>
 </style>
