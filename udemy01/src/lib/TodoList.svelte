@@ -1,3 +1,5 @@
+<svelte:options immutable={true} />
+
 <script>
     import Button from "./Button.svelte";
     import { createEventDispatcher } from "svelte";
@@ -25,7 +27,7 @@
     <ul>
         {#each todos as { id, title }, index (id)}
             {@const number = index + 1}
-            <li>{number}- {title}</li>
+            <li>{number} - {title}</li>
         {/each}
     </ul>
     <form class="add-todo-form" on:submit|preventDefault={handleAddTodo}>
