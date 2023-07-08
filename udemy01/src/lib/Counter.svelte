@@ -1,22 +1,31 @@
 <!-- When rendered, the script only runs once! -->
 <script>
-	let count = 0;
-	// let string = `You have clicked ${count} times`;
+	let count1 = 0;
+	let count2 = 0;
 
 	// Reactive statements run whenever the values they depend on change
-	$: string = `You have clicked ${count} times`;
 
-	$: if (count > 5) {
-		console.log(`The count is ${count}`);
-	}
+	// Not going to work
+	$: string = `The count total is ${getTotal()}`;
+
 	// End Reactive statements
 
-	function increment() {
-		count += 1;
+	function getTotal() {
+		return count1 + count2;
+	}
+
+	function increment1() {
+		count1 += 1;
+	}
+
+	function increment2() {
+		count2 += 1;
 	}
 </script>
 
-<button on:click={increment}>Clicks: {count}</button>
+<button on:click={increment1}>Clicks: {count1}</button>
+<button on:click={increment2}>Clicks: {count2}</button>
+
 <h3>{string}</h3>
 
 <style>
