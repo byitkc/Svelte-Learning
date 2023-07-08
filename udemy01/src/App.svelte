@@ -3,7 +3,7 @@
 </script>
 
 <!-- If we setup the button like this, we can use "slots" to pass the text in `./src/Button.svelte` -->
-<Button>Button Text</Button>
+<Button size="small" shadow>Button Text</Button>
 
 <style>
 </style>
