@@ -7,14 +7,6 @@
 
     function handleAddTodo() {
         if (!inputText) return;
-        // This is one way we can do this, but there is a better and cleaner way
-        // todos.push({
-        //     id: uuid(),
-        //     title: inputText,
-        //     completed: false,
-        // });
-        // todos = todos;
-
         // Add the input text to the todos array
         todos = [
             ...todos,
@@ -24,7 +16,7 @@
                 completed: false,
             },
         ];
-        // We can use this to clear the input after submission
+        // Clear the input after submission
         inputText = "";
     }
 </script>

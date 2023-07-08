@@ -2,7 +2,7 @@
 	import TodoList from "./lib/TodoList.svelte";
 	import { v4 as uuid } from "uuid";
 
-	const todos = [
+	let todos = [
 		{
 			id: uuid(),
 			title: "Todo 1",
@@ -19,9 +19,18 @@
 			completed: true,
 		},
 	];
+	$: console.log(todos);
 </script>
 
-<TodoList {todos} />
+<h2>{todos.length} Todos</h2>
+<!-- If we bind instead of just passing "todos" it will sync and update here when it is updated in the component -->
+<TodoList bind:todos />
+
+<button
+	on:click={() => {
+		todos = [];
+	}}>Clear todos</button
+>
 
 <style>
 </style>
