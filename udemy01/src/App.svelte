@@ -1,14 +1,9 @@
 <script>
-	import Counter from "./lib/Counter.svelte";
-
-	const props = {
-		initialCount: 3,
-		maxCount: 6
-	};
+	import Button from "./lib/Button.svelte";
 </script>
 
-<!-- We can also spread an object to pass props to our components -->
-<Counter {...props} thing={0} />
+<!-- If we setup the button like this, we can use "slots" to pass the text in `./src/Button.svelte` -->
+<Button>Button Text</Button>
 
 <style>
 </style>
