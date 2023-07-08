@@ -28,7 +28,7 @@
 
     afterUpdate(() => {
         if (!autoScroll) return;
-        listDiv.scrollTo(0, listDiv.scrollHeight);
+        listDiv.scrollTo(0, listDivScrollHeight);
         autoScroll = false;
     });
 
@@ -47,9 +47,9 @@
     export function focusInput() {
         input.focus();
     }
-    
+
     let inputText = "";
-    let input, listDiv, autoScroll;
+    let input, listDiv, autoScroll, listDivScrollHeight;
 
     const dispatch = createEventDispatcher();
 
@@ -82,25 +82,28 @@
 
 <div class="todo-list-wrapper">
     <div class="todo-list" bind:this={listDiv}>
-        <ul>
-            {#each todos as { id, title, completed } (id)}
-                <li>
-                    <label>
-                        <input
-                            on:input={(event) => {
-                                event.currentTarget.checked = completed;
-                                handleToggleTodo(id, !completed);
-                            }}
-                            type="checkbox"
-                            checked={completed}
-                        />
-                        {title}
-                    </label>
-                    <button on:click={() => handleRemoveTodo(id)}>Remove</button
-                    >
-                </li>
-            {/each}
-        </ul>
+        <div bind:offsetHeight={listDivScrollHeight}>
+            <ul>
+                {#each todos as { id, title, completed } (id)}
+                    <li>
+                        <label>
+                            <input
+                                on:input={(event) => {
+                                    event.currentTarget.checked = completed;
+                                    handleToggleTodo(id, !completed);
+                                }}
+                                type="checkbox"
+                                checked={completed}
+                            />
+                            {title}
+                        </label>
+                        <button on:click={() => handleRemoveTodo(id)}
+                            >Remove</button
+                        >
+                    </li>
+                {/each}
+            </ul>
+        </div>
     </div>
     <form class="add-todo-form" on:submit|preventDefault={handleAddTodo}>
         <input bind:this={input} bind:value={inputText} />
