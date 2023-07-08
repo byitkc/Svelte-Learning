@@ -3,6 +3,7 @@
 	import { v4 as uuid } from "uuid";
 
 	let todoList;
+	let showList = true;
 
 	let todos = [
 		{
@@ -25,18 +26,16 @@
 
 	function handleAddTodo(event) {
 		event.preventDefault();
-		setTimeout(() => {
-			todos = [
-				...todos,
-				{
-					id: uuid(),
-					title: event.detail.title,
-					completed: false,
-				},
-			];
-			// Clear our input
-			todoList.clearInput();
-		}, 1000);
+		todos = [
+			...todos,
+			{
+				id: uuid(),
+				title: event.detail.title,
+				completed: false,
+			},
+		];
+		// Clear our input
+		todoList.clearInput();
 	}
 
 	function handleRemoveTodo(event) {
@@ -57,19 +56,20 @@
 </script>
 
 <!-- If we bind instead of just passing "todos" it will sync and update here when it is updated in the component -->
-<TodoList
-	{todos}
-	bind:this={todoList}
-	on:addtodo={handleAddTodo}
-	on:removetodo={handleRemoveTodo}
-	on:toggletodo={handleToggleTodo}
-/>
+<label>
+	<input type="checkbox" bind:checked={showList} />
+	Show list
+</label>
 
-<button
-	on:click={() => {
-		todoList.focusInput();
-	}}>Focus input</button
->
+{#if showList}
+	<TodoList
+		{todos}
+		bind:this={todoList}
+		on:addtodo={handleAddTodo}
+		on:removetodo={handleRemoveTodo}
+		on:toggletodo={handleToggleTodo}
+	/>
+{/if}
 
 <style>
 </style>
