@@ -10,6 +10,7 @@
 	}}
 	size="small"
 	shadow
+	disabled
 >
 	<div style:width="20px" slot="leftContent">
 		<FaAngellist />
