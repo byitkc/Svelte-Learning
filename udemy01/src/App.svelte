@@ -4,13 +4,15 @@
 	import FaAllergies from "svelte-icons/fa/FaAllergies.svelte";
 </script>
 
-<Button let:isLeftHovered size="small" shadow>
-	<div style:width="20px" slot="leftContent" let:x>
-		{#if isLeftHovered}
-			<FaAngellist />
-		{:else}
-			<FaAllergies />
-		{/if}
+<Button
+	on:click|once={(event) => {
+		alert(true);
+	}}
+	size="small"
+	shadow
+>
+	<div style:width="20px" slot="leftContent">
+		<FaAngellist />
 	</div>
 	Button Text
 </Button>
