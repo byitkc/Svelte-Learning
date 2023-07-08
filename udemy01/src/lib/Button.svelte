@@ -1,11 +1,15 @@
 <script>
     export let size = "small";
     export let shadow = false;
+    export let bgColor = "inherit";
+    export let textColor = "inherit";
 </script>
 
 <!-- We can use "slot" to pull the text from the button defined between tags in App.svelte -->
 <!-- If we use the slot tags and place something in them, it will be used if no slot is passed -->
 <button
+    style:--buttonBgColor={bgColor}
+    style:--buttonTextColor={textColor}
     class:size-lg={size === "large"}
     class:size-md={size === "medium"}
     class:size-sm={size === "small"}
@@ -15,8 +19,8 @@
 <style lang="scss">
     button {
         border: none;
-        background-color: #ff3e00;
-        color: white;
+        background-color: var(--buttonBgColor);
+        color: var(--buttonTextColor);
         padding: 15px 20px;
         font-weight: bold;
         border-radius: 5px;
