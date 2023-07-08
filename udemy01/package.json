@@ -16,6 +16,7 @@
   "dependencies": {
     "sass": "^1.63.6",
     "scss": "^0.2.4",
+    "svelte-icons": "^2.1.0",
     "svelte-preprocess": "^5.0.4"
   }
 }
