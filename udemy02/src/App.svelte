@@ -1,49 +1,63 @@
 <script>
-	import ContactCard from "./ContactCard.svelte";
+    import ContactCard from "./ContactCard.svelte";
 
-	let name = "Brandon";
-	let age = 32;
-	let jobTitle = "Infrastructure Engineer";
-	let description = "I don't really do anything.";
-	let imageUrl;
+    let name = "Max";
+    let title = "";
+    let image = "";
+    let description = "";
+    let formState = "empty";
 
-	// Labeled statements will listen for changes to the variables
-	$: upperCaseName = name.toUpperCase();
-
-	$: console.log(name);
-
-	$: if (name === "Bob") {
-		console.log("Bob is here!");
-		age = 31;
-	}
-
-	function incrementAge() {
-		age += 1;
-	}
-
-	function changeName() {
-		name = "Bob";
-	}
-
-	function nameInput(event) {
-		name = event.target.value;
-	}
+    function addContact() {
+        if (
+            name.trim().length == 0 ||
+            title.trim().length == 0 ||
+            description.trim().length == 0 ||
+            description.trim().length == 0
+        ) {
+            formState = "invalid";
+            return;
+        }
+        formState = "done";
+    }
 </script>
 
-<h1>Hello {upperCaseName}, my age is {age}!</h1>
-<button on:click={incrementAge}>Change Age</button>
-<div><input type="text" bind:value={name} /></div>
-<div><input type="text" bind:value={jobTitle} /></div>
-<div><textarea rows="3" bind:value={description} /></div>
-<div><input type="text" bind:value={imageUrl} /></div>
-<ContactCard {name} {jobTitle} {description} {imageUrl} />
+<div id="form">
+    <div class="form-control">
+        <label for="userName">User Name</label>
+        <input type="text" bind:value={name} id="userName" />
+    </div>
+    <div class="form-control">
+        <label for="jobTitle">Job Title</label>
+        <input type="text" bind:value={title} id="jobTitle" />
+    </div>
+    <div class="form-control">
+        <label for="image">Image URL</label>
+        <input type="text" bind:value={image} id="image" />
+    </div>
+    <div class="form-control">
+        <label for="desc">Description</label>
+        <textarea rows="3" bind:value={description} id="desc" />
+    </div>
+</div>
 
-<!-- <input type="text" bind:value={name} /> -->
+<button on:click={addContact}>Add Contact Card</button>
 
-<!-- <button on:click={changeName}>Change Name</button> -->
+{#if formState === "done"}
+    <ContactCard
+        userName={name}
+        jobTitle={title}
+        {description}
+        userImage={image}
+    />
+{:else if formState === "invalid"}
+    <p>Please fill in all fields</p>
+{:else}
+    <p>Fill out the form to add a contact card</p>
+{/if}
 
 <style>
-	h1 {
-		color: purple;
-	}
+    #form {
+        width: 30rem;
+        max-width: 100%;
+    }
 </style>
