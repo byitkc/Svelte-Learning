@@ -54,23 +54,34 @@
 <button on:click={addContact}>Add Contact Card</button>
 
 {#if formState === "invalid"}
-    <p>Please fill in all fields</p>
+    <p class="error">Please fill in all fields</p>
 {:else}
     <p>Fill out the form to add a contact card</p>
 {/if}
 
-{#each createdContacts as contact}
+{#each createdContacts as contact, index}
+    <h2># {index + 1}</h2>
     <ContactCard
         userName={contact.name}
         jobTitle={contact.jobTitle}
         description={contact.description}
         userImage={contact.imageUrl}
     />
+{:else}
+    <p class="warning">⚠️ No contacts created yet!</p>
 {/each}
 
 <style>
     #form {
         width: 30rem;
         max-width: 100%;
+    }
+
+    .warning {
+        color: orange;
+    }
+
+    .error {
+        color: red;
     }
 </style>
