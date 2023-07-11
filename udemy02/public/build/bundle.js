@@ -62,6 +62,13 @@ var app = (function () {
         node.addEventListener(event, handler, options);
         return () => node.removeEventListener(event, handler, options);
     }
+    function prevent_default(fn) {
+        return function (event) {
+            event.preventDefault();
+            // @ts-ignore
+            return fn.call(this, event);
+        };
+    }
     function attr(node, attribute, value) {
         if (value == null)
             node.removeAttribute(attribute);
@@ -787,7 +794,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (69:0) {:else}
+    // (72:0) {:else}
     function create_else_block_1(ctx) {
     	let p;
 
@@ -795,7 +802,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "Fill out the form to add a contact card";
-    			add_location(p, file, 69, 4, 1875);
+    			add_location(p, file, 72, 4, 2192);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -809,14 +816,14 @@ var app = (function () {
     		block,
     		id: create_else_block_1.name,
     		type: "else",
-    		source: "(69:0) {:else}",
+    		source: "(72:0) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (67:0) {#if formState === "invalid"}
+    // (70:0) {#if formState === "invalid"}
     function create_if_block(ctx) {
     	let p;
 
@@ -824,8 +831,8 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "Please fill in all fields";
-    			attr_dev(p, "class", "error svelte-1v28qdz");
-    			add_location(p, file, 67, 4, 1816);
+    			attr_dev(p, "class", "error svelte-6smzhv");
+    			add_location(p, file, 70, 4, 2133);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -839,14 +846,14 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(67:0) {#if formState === \\\"invalid\\\"}",
+    		source: "(70:0) {#if formState === \\\"invalid\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (81:0) {:else}
+    // (84:0) {:else}
     function create_else_block(ctx) {
     	let p;
 
@@ -854,8 +861,8 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "⚠️ No contacts created yet!";
-    			attr_dev(p, "class", "warning svelte-1v28qdz");
-    			add_location(p, file, 81, 4, 2194);
+    			attr_dev(p, "class", "warning svelte-6smzhv");
+    			add_location(p, file, 84, 4, 2511);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -870,14 +877,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(81:0) {:else}",
+    		source: "(84:0) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (73:0) {#each createdContacts as contact, index (contact.id)}
+    // (76:0) {#each createdContacts as contact, index (contact.id)}
     function create_each_block(key_1, ctx) {
     	let h2;
     	let t0;
@@ -906,7 +913,7 @@ var app = (function () {
     			t1 = text(t1_value);
     			t2 = space();
     			create_component(contactcard.$$.fragment);
-    			add_location(h2, file, 73, 4, 1988);
+    			add_location(h2, file, 76, 4, 2305);
     			this.first = h2;
     		},
     		m: function mount(target, anchor) {
@@ -947,7 +954,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(73:0) {#each createdContacts as contact, index (contact.id)}",
+    		source: "(76:0) {#each createdContacts as contact, index (contact.id)}",
     		ctx
     	});
 
@@ -955,7 +962,7 @@ var app = (function () {
     }
 
     function create_fragment(ctx) {
-    	let div4;
+    	let form;
     	let div0;
     	let label0;
     	let t1;
@@ -1016,7 +1023,7 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			div4 = element("div");
+    			form = element("form");
     			div0 = element("div");
     			label0 = element("label");
     			label0.textContent = "User Name";
@@ -1064,70 +1071,71 @@ var app = (function () {
     			}
 
     			attr_dev(label0, "for", "userName");
-    			add_location(label0, file, 45, 8, 1047);
+    			add_location(label0, file, 45, 8, 1048);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "id", "userName");
-    			add_location(input0, file, 46, 8, 1095);
+    			add_location(input0, file, 46, 8, 1096);
     			attr_dev(div0, "class", "form-control");
-    			add_location(div0, file, 44, 4, 1012);
+    			add_location(div0, file, 44, 4, 1013);
     			attr_dev(label1, "for", "jobTitle");
-    			add_location(label1, file, 49, 8, 1199);
+    			add_location(label1, file, 49, 8, 1200);
     			attr_dev(input1, "type", "text");
     			attr_dev(input1, "id", "jobTitle");
-    			add_location(input1, file, 50, 8, 1247);
+    			add_location(input1, file, 50, 8, 1248);
     			attr_dev(div1, "class", "form-control");
-    			add_location(div1, file, 48, 4, 1164);
+    			add_location(div1, file, 48, 4, 1165);
     			attr_dev(label2, "for", "image");
-    			add_location(label2, file, 53, 8, 1352);
+    			add_location(label2, file, 53, 8, 1353);
     			attr_dev(input2, "type", "text");
     			attr_dev(input2, "id", "image");
-    			add_location(input2, file, 54, 8, 1397);
+    			add_location(input2, file, 54, 8, 1398);
     			attr_dev(div2, "class", "form-control");
-    			add_location(div2, file, 52, 4, 1317);
+    			add_location(div2, file, 52, 4, 1318);
     			attr_dev(label3, "for", "desc");
-    			add_location(label3, file, 57, 8, 1499);
+    			add_location(label3, file, 57, 8, 1500);
     			attr_dev(textarea, "rows", "3");
     			attr_dev(textarea, "id", "desc");
-    			add_location(textarea, file, 58, 8, 1545);
+    			add_location(textarea, file, 58, 8, 1546);
     			attr_dev(div3, "class", "form-control");
-    			add_location(div3, file, 56, 4, 1464);
-    			attr_dev(div4, "id", "form");
-    			attr_dev(div4, "class", "svelte-1v28qdz");
-    			add_location(div4, file, 43, 0, 992);
-    			add_location(button0, file, 62, 0, 1621);
-    			add_location(button1, file, 63, 0, 1677);
-    			add_location(button2, file, 64, 0, 1730);
+    			add_location(div3, file, 56, 4, 1465);
+    			attr_dev(button0, "type", "submit");
+    			add_location(button0, file, 61, 4, 1806);
+    			attr_dev(form, "id", "form");
+    			attr_dev(form, "class", "svelte-6smzhv");
+    			add_location(form, file, 43, 0, 992);
+    			add_location(button1, file, 66, 0, 1989);
+    			add_location(button2, file, 67, 0, 2047);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div4, anchor);
-    			append_dev(div4, div0);
+    			insert_dev(target, form, anchor);
+    			append_dev(form, div0);
     			append_dev(div0, label0);
     			append_dev(div0, t1);
     			append_dev(div0, input0);
     			set_input_value(input0, /*name*/ ctx[0]);
-    			append_dev(div4, t2);
-    			append_dev(div4, div1);
+    			append_dev(form, t2);
+    			append_dev(form, div1);
     			append_dev(div1, label1);
     			append_dev(div1, t4);
     			append_dev(div1, input1);
     			set_input_value(input1, /*title*/ ctx[1]);
-    			append_dev(div4, t5);
-    			append_dev(div4, div2);
+    			append_dev(form, t5);
+    			append_dev(form, div2);
     			append_dev(div2, label2);
     			append_dev(div2, t7);
     			append_dev(div2, input2);
     			set_input_value(input2, /*image*/ ctx[2]);
-    			append_dev(div4, t8);
-    			append_dev(div4, div3);
+    			append_dev(form, t8);
+    			append_dev(form, div3);
     			append_dev(div3, label3);
     			append_dev(div3, t10);
     			append_dev(div3, textarea);
     			set_input_value(textarea, /*description*/ ctx[3]);
-    			insert_dev(target, t11, anchor);
-    			insert_dev(target, button0, anchor);
+    			append_dev(form, t11);
+    			append_dev(form, button0);
     			insert_dev(target, t13, anchor);
     			insert_dev(target, button1, anchor);
     			insert_dev(target, t15, anchor);
@@ -1156,8 +1164,8 @@ var app = (function () {
     					listen_dev(input1, "input", /*input1_input_handler*/ ctx[10]),
     					listen_dev(input2, "input", /*input2_input_handler*/ ctx[11]),
     					listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[12]),
-    					listen_dev(button0, "click", /*addContact*/ ctx[6], false, false, false, false),
-    					listen_dev(button1, "click", /*deleteFirst*/ ctx[7], false, false, false, false),
+    					listen_dev(button0, "click", prevent_default(/*addContact*/ ctx[6]), false, true, false, false),
+    					listen_dev(button1, "click", /*deleteFirst*/ ctx[7], { once: true }, false, false, false),
     					listen_dev(button2, "click", /*deleteLast*/ ctx[8], false, false, false, false)
     				];
 
@@ -1228,9 +1236,7 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div4);
-    			if (detaching) detach_dev(t11);
-    			if (detaching) detach_dev(button0);
+    			if (detaching) detach_dev(form);
     			if (detaching) detach_dev(t13);
     			if (detaching) detach_dev(button1);
     			if (detaching) detach_dev(t15);
