@@ -1,7 +1,11 @@
 <script>
     import { createEventDispatcher } from "svelte";
 
-    export let productTitle;
+    export let id;
+    export let title;
+    export let price;
+    // This is a prop that we don't necessarily need, we set a default value to avoid warnings
+    export let bestseller = false;
 
     const dispatch = createEventDispatcher();
 
@@ -17,7 +21,11 @@
 </script>
 
 <article>
-    <h1>{productTitle}</h1>
+    <h1>{title}</h1>
+    <h2>${price}</h2>
+    {#if bestseller}
+        <h3>Best Seller</h3>
+    {/if}
     <!-- If we just set the event listener "on:click" without pointing it to a function it will forward the event -->
     <!-- to the parent component. It only forwards up one component! -->
     <button on:click={addToCart}>Add to Cart</button>
