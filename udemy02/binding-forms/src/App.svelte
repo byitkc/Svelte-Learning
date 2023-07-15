@@ -7,12 +7,14 @@
     let selectedOption = 1;
     let agreed;
     let favoriteColor;
+    let singleFavoriteColor = "red";
 
     $: console.log(value);
     $: console.log(selectedOption);
     $: console.log(price);
     $: console.log(agreed);
     $: console.log(favoriteColor);
+    $: console.log(singleFavoriteColor);
 
     function setValue(event) {
         value = event.target.value;
@@ -25,7 +27,7 @@
 <Toggle bind:chosenOption={selectedOption} />
 
 <input type="number" bind:value={price} />
-
+<br />
 <div>
     <input type="checkbox" bind:checked={agreed} />
     Agree to terms?
@@ -60,4 +62,12 @@
         />
         Blue
     </label>
+</div>
+<br />
+<div>
+    <select bind:value={singleFavoriteColor}>
+        <option value="green">Green</option>
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+    </select>
 </div>
