@@ -1,5 +1,6 @@
 <script>
 	import Product from "./Product.svelte";
+	import Modal from "./Modal.svelte";
 
 	let products = [
 		{ id: "p1", title: "A Book", price: 9.99 },
@@ -23,3 +24,8 @@
 		on:delete={deleteProduct}
 	/>
 {/each}
+
+<Modal>
+	<h1>Hi!</h1>
+	<p>This works!</p>
+</Modal>
