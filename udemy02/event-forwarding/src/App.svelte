@@ -1,4 +1,5 @@
 <script>
+	import { tick } from "svelte";
 	import Product from "./Product.svelte";
 	import Modal from "./Modal.svelte";
 
@@ -9,6 +10,7 @@
 	];
 	let showModal = false;
 	let closable = false;
+	let text = "This is some dummy text.";
 
 	function addToCart(event) {
 		console.log(event.detail);
@@ -16,6 +18,29 @@
 
 	function deleteProduct(event) {
 		console.log(event.detail);
+	}
+
+	function transform(event) {
+		if (event.which !== 9) {
+			return;
+		}
+		event.preventDefault();
+
+		const selectionStart = event.target.selectionStart;
+		const selectionEnd = event.target.selectionEnd;
+		const value = event.target.value;
+
+		text =
+			value.slice(0, selectionStart) +
+			value.slice(selectionStart, selectionEnd).toUpperCase() +
+			value.slice(selectionEnd);
+
+		// This will wait the next microtask to complete, and then run the function
+		// This is useful when we want to wait for the DOM to update before running a function
+		tick().then(() => {
+			event.target.selectionStart = selectionStart;
+			event.target.selectionEnd = selectionEnd;
+		});
 	}
 </script>
 
@@ -46,3 +71,7 @@
 		</button>
 	</Modal>
 {/if}
+
+<div>
+	<textarea rows="10" value={text} on:keydown={transform} />
+</div>
