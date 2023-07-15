@@ -3,11 +3,25 @@
 
 <div class="backdrop" />
 <div class="modal">
-    <!-- This tell Svelte that any content passed between the "Modal" tags in the parent should be put here -->
-    <slot />
+    <header>
+        <slot name="header" />
+    </header>
+    <div class="content">
+        <!-- This tell Svelte that any content passed between the "Modal" tags in the parent should be put here -->
+        <slot />
+    </div>
+    <footer>
+        <slot name="footer">
+            <button>Close</button>
+        </slot>
+    </footer>
 </div>
 
 <style>
+    header {
+        border-bottom: 1px solid #ccc;
+    }
+
     .backdrop {
         position: fixed;
         top: 0;
