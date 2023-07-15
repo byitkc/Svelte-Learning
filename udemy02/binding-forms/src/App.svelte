@@ -8,6 +8,8 @@
     let agreed;
     let favoriteColor;
     let singleFavoriteColor = "red";
+    let usernameInput;
+    let someDiv;
 
     $: console.log(value);
     $: console.log(selectedOption);
@@ -18,6 +20,13 @@
 
     function setValue(event) {
         value = event.target.value;
+    }
+
+    function saveData() {
+        // console.log(document.querySelector("#username").value); // Vanilla Javascript, there's a better way with Svelte
+        console.log(usernameInput.value);
+        console.dir(usernameInput);
+        console.dir(someDiv);
     }
 </script>
 
@@ -71,3 +80,12 @@
         <option value="blue">Blue</option>
     </select>
 </div>
+<br />
+<div>
+    <!-- <input type="text" id="username" /> -->
+    <!-- ^ Vanilla Javascript, there's a better way with Svelte -->
+    <input type="text" bind:this={usernameInput} />
+    <button on:click={saveData}>Save</button>
+</div>
+<br />
+<div bind:this={someDiv} />
