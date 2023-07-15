@@ -71,6 +71,10 @@
         // Override the existing meetups array
         meetups = updatedMeetups;
     }
+
+    function cancelEdit() {
+        editMode = null;
+    }
 </script>
 
 <Header />
@@ -79,7 +83,7 @@
     <div class="meetup-controls" />
     <Button on:click={() => (editMode = "add")}>New Meetup</Button>
     {#if editMode === "add"}
-        <EditMeetup on:save={addMeetup} />
+        <EditMeetup on:save={addMeetup} on:cancel={cancelEdit} />
     {/if}
     <MeetupGrid {meetups} on:toggleFavorite={toggleFavorite} />
 </main>
