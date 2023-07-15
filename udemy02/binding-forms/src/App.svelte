@@ -10,6 +10,7 @@
     let singleFavoriteColor = "red";
     let usernameInput;
     let someDiv;
+    let customInput;
 
     $: console.log(value);
     $: console.log(selectedOption);
@@ -17,6 +18,7 @@
     $: console.log(agreed);
     $: console.log(favoriteColor);
     $: console.log(singleFavoriteColor);
+    $: console.log(customInput);
 
     function setValue(event) {
         value = event.target.value;
@@ -27,12 +29,13 @@
         console.log(usernameInput.value);
         console.dir(usernameInput);
         console.dir(someDiv);
+        customInput.empty();
     }
 </script>
 
 <!-- <input type="text" {value} on:input={setValue} /> -->
 <!-- <input type="text" bind:value /> -->
-<CustomInput bind:value />
+<CustomInput bind:value bind:this={customInput} />
 <Toggle bind:chosenOption={selectedOption} />
 
 <input type="number" bind:value={price} />

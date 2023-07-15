@@ -1,6 +1,9 @@
 <script>
     export let value;
-    export let type;
+
+    export function empty() {
+        value = "";
+    }
 </script>
 
 <input type="text" bind:value />

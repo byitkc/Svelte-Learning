@@ -471,7 +471,7 @@ var app = (function () {
     		c: function create() {
     			input = element("input");
     			attr_dev(input, "type", "text");
-    			add_location(input, file$2, 5, 0, 63);
+    			add_location(input, file$2, 8, 0, 99);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -514,19 +514,18 @@ var app = (function () {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('CustomInput', slots, []);
     	let { value } = $$props;
-    	let { type } = $$props;
+
+    	function empty() {
+    		$$invalidate(0, value = "");
+    	}
 
     	$$self.$$.on_mount.push(function () {
     		if (value === undefined && !('value' in $$props || $$self.$$.bound[$$self.$$.props['value']])) {
     			console.warn("<CustomInput> was created without expected prop 'value'");
     		}
-
-    		if (type === undefined && !('type' in $$props || $$self.$$.bound[$$self.$$.props['type']])) {
-    			console.warn("<CustomInput> was created without expected prop 'type'");
-    		}
     	});
 
-    	const writable_props = ['value', 'type'];
+    	const writable_props = ['value'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<CustomInput> was created with unknown prop '${key}'`);
@@ -539,27 +538,25 @@ var app = (function () {
 
     	$$self.$$set = $$props => {
     		if ('value' in $$props) $$invalidate(0, value = $$props.value);
-    		if ('type' in $$props) $$invalidate(1, type = $$props.type);
     	};
 
-    	$$self.$capture_state = () => ({ value, type });
+    	$$self.$capture_state = () => ({ value, empty });
 
     	$$self.$inject_state = $$props => {
     		if ('value' in $$props) $$invalidate(0, value = $$props.value);
-    		if ('type' in $$props) $$invalidate(1, type = $$props.type);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [value, type, input_input_handler];
+    	return [value, empty, input_input_handler];
     }
 
     class CustomInput extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { value: 0, type: 1 });
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { value: 0, empty: 1 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -577,11 +574,11 @@ var app = (function () {
     		throw new Error("<CustomInput>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
-    	get type() {
-    		throw new Error("<CustomInput>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	get empty() {
+    		return this.$$.ctx[1];
     	}
 
-    	set type(value) {
+    	set empty(value) {
     		throw new Error("<CustomInput>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
@@ -774,7 +771,7 @@ var app = (function () {
     	let dispose;
 
     	function custominput_value_binding(value) {
-    		/*custominput_value_binding*/ ctx[9](value);
+    		/*custominput_value_binding*/ ctx[10](value);
     	}
 
     	let custominput_props = {};
@@ -785,9 +782,10 @@ var app = (function () {
 
     	custominput = new CustomInput({ props: custominput_props, $$inline: true });
     	binding_callbacks.push(() => bind(custominput, 'value', custominput_value_binding));
+    	/*custominput_binding*/ ctx[11](custominput);
 
     	function toggle_chosenOption_binding(value) {
-    		/*toggle_chosenOption_binding*/ ctx[10](value);
+    		/*toggle_chosenOption_binding*/ ctx[12](value);
     	}
 
     	let toggle_props = {};
@@ -798,7 +796,7 @@ var app = (function () {
 
     	toggle = new Toggle({ props: toggle_props, $$inline: true });
     	binding_callbacks.push(() => bind(toggle, 'chosenOption', toggle_chosenOption_binding));
-    	binding_group = init_binding_group(/*$$binding_groups*/ ctx[14][0]);
+    	binding_group = init_binding_group(/*$$binding_groups*/ ctx[16][0]);
 
     	const block = {
     		c: function create() {
@@ -853,51 +851,51 @@ var app = (function () {
     			t23 = space();
     			div4 = element("div");
     			attr_dev(input0, "type", "number");
-    			add_location(input0, file, 37, 0, 1009);
-    			add_location(br0, file, 38, 0, 1052);
+    			add_location(input0, file, 40, 0, 1116);
+    			add_location(br0, file, 41, 0, 1159);
     			attr_dev(input1, "type", "checkbox");
-    			add_location(input1, file, 40, 4, 1069);
-    			add_location(div0, file, 39, 0, 1059);
-    			add_location(h1, file, 45, 4, 1155);
+    			add_location(input1, file, 43, 4, 1176);
+    			add_location(div0, file, 42, 0, 1166);
+    			add_location(h1, file, 48, 4, 1262);
     			attr_dev(input2, "type", "radio");
     			attr_dev(input2, "name", "color");
     			input2.__value = "red";
     			input2.value = input2.__value;
-    			add_location(input2, file, 47, 8, 1199);
-    			add_location(label0, file, 46, 4, 1183);
+    			add_location(input2, file, 50, 8, 1306);
+    			add_location(label0, file, 49, 4, 1290);
     			attr_dev(input3, "type", "radio");
     			attr_dev(input3, "name", "color");
     			input3.__value = "green";
     			input3.value = input3.__value;
-    			add_location(input3, file, 56, 8, 1375);
-    			add_location(label1, file, 55, 4, 1359);
+    			add_location(input3, file, 59, 8, 1482);
+    			add_location(label1, file, 58, 4, 1466);
     			attr_dev(input4, "type", "radio");
     			attr_dev(input4, "name", "color");
     			input4.__value = "blue";
     			input4.value = input4.__value;
-    			add_location(input4, file, 65, 8, 1555);
-    			add_location(label2, file, 64, 4, 1539);
-    			add_location(div1, file, 44, 0, 1145);
-    			add_location(br1, file, 74, 0, 1720);
+    			add_location(input4, file, 68, 8, 1662);
+    			add_location(label2, file, 67, 4, 1646);
+    			add_location(div1, file, 47, 0, 1252);
+    			add_location(br1, file, 77, 0, 1827);
     			option0.__value = "green";
     			option0.value = option0.__value;
-    			add_location(option0, file, 77, 8, 1787);
+    			add_location(option0, file, 80, 8, 1894);
     			option1.__value = "red";
     			option1.value = option1.__value;
-    			add_location(option1, file, 78, 8, 1832);
+    			add_location(option1, file, 81, 8, 1939);
     			option2.__value = "blue";
     			option2.value = option2.__value;
-    			add_location(option2, file, 79, 8, 1873);
-    			if (/*singleFavoriteColor*/ ctx[5] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[17].call(select));
-    			add_location(select, file, 76, 4, 1737);
-    			add_location(div2, file, 75, 0, 1727);
-    			add_location(br2, file, 82, 0, 1929);
+    			add_location(option2, file, 82, 8, 1980);
+    			if (/*singleFavoriteColor*/ ctx[5] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[19].call(select));
+    			add_location(select, file, 79, 4, 1844);
+    			add_location(div2, file, 78, 0, 1834);
+    			add_location(br2, file, 85, 0, 2036);
     			attr_dev(input5, "type", "text");
-    			add_location(input5, file, 86, 4, 2063);
-    			add_location(button, file, 87, 4, 2115);
-    			add_location(div3, file, 83, 0, 1936);
-    			add_location(br3, file, 89, 0, 2164);
-    			add_location(div4, file, 90, 0, 2171);
+    			add_location(input5, file, 89, 4, 2170);
+    			add_location(button, file, 90, 4, 2222);
+    			add_location(div3, file, 86, 0, 2043);
+    			add_location(br3, file, 92, 0, 2271);
+    			add_location(div4, file, 93, 0, 2278);
     			binding_group.p(input2, input3, input4);
     		},
     		l: function claim(nodes) {
@@ -949,25 +947,25 @@ var app = (function () {
     			insert_dev(target, t19, anchor);
     			insert_dev(target, div3, anchor);
     			append_dev(div3, input5);
-    			/*input5_binding*/ ctx[18](input5);
+    			/*input5_binding*/ ctx[20](input5);
     			append_dev(div3, t20);
     			append_dev(div3, button);
     			insert_dev(target, t22, anchor);
     			insert_dev(target, br3, anchor);
     			insert_dev(target, t23, anchor);
     			insert_dev(target, div4, anchor);
-    			/*div4_binding*/ ctx[19](div4);
+    			/*div4_binding*/ ctx[21](div4);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[11]),
-    					listen_dev(input1, "change", /*input1_change_handler*/ ctx[12]),
-    					listen_dev(input2, "change", /*input2_change_handler*/ ctx[13]),
-    					listen_dev(input3, "change", /*input3_change_handler*/ ctx[15]),
-    					listen_dev(input4, "change", /*input4_change_handler*/ ctx[16]),
-    					listen_dev(select, "change", /*select_change_handler*/ ctx[17]),
-    					listen_dev(button, "click", /*saveData*/ ctx[8], false, false, false, false)
+    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[13]),
+    					listen_dev(input1, "change", /*input1_change_handler*/ ctx[14]),
+    					listen_dev(input2, "change", /*input2_change_handler*/ ctx[15]),
+    					listen_dev(input3, "change", /*input3_change_handler*/ ctx[17]),
+    					listen_dev(input4, "change", /*input4_change_handler*/ ctx[18]),
+    					listen_dev(select, "change", /*select_change_handler*/ ctx[19]),
+    					listen_dev(button, "click", /*saveData*/ ctx[9], false, false, false, false)
     				];
 
     				mounted = true;
@@ -1029,6 +1027,7 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
+    			/*custominput_binding*/ ctx[11](null);
     			destroy_component(custominput, detaching);
     			if (detaching) detach_dev(t0);
     			destroy_component(toggle, detaching);
@@ -1048,12 +1047,12 @@ var app = (function () {
     			if (detaching) detach_dev(br2);
     			if (detaching) detach_dev(t19);
     			if (detaching) detach_dev(div3);
-    			/*input5_binding*/ ctx[18](null);
+    			/*input5_binding*/ ctx[20](null);
     			if (detaching) detach_dev(t22);
     			if (detaching) detach_dev(br3);
     			if (detaching) detach_dev(t23);
     			if (detaching) detach_dev(div4);
-    			/*div4_binding*/ ctx[19](null);
+    			/*div4_binding*/ ctx[21](null);
     			binding_group.r();
     			mounted = false;
     			run_all(dispose);
@@ -1082,6 +1081,7 @@ var app = (function () {
     	let singleFavoriteColor = "red";
     	let usernameInput;
     	let someDiv;
+    	let customInput;
 
     	function setValue(event) {
     		$$invalidate(0, value = event.target.value);
@@ -1093,6 +1093,7 @@ var app = (function () {
 
     		console.dir(usernameInput);
     		console.dir(someDiv);
+    		customInput.empty();
     	}
 
     	const writable_props = [];
@@ -1106,6 +1107,13 @@ var app = (function () {
     	function custominput_value_binding(value$1) {
     		value = value$1;
     		$$invalidate(0, value);
+    	}
+
+    	function custominput_binding($$value) {
+    		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+    			customInput = $$value;
+    			$$invalidate(6, customInput);
+    		});
     	}
 
     	function toggle_chosenOption_binding(value) {
@@ -1146,14 +1154,14 @@ var app = (function () {
     	function input5_binding($$value) {
     		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
     			usernameInput = $$value;
-    			$$invalidate(6, usernameInput);
+    			$$invalidate(7, usernameInput);
     		});
     	}
 
     	function div4_binding($$value) {
     		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
     			someDiv = $$value;
-    			$$invalidate(7, someDiv);
+    			$$invalidate(8, someDiv);
     		});
     	}
 
@@ -1168,6 +1176,7 @@ var app = (function () {
     		singleFavoriteColor,
     		usernameInput,
     		someDiv,
+    		customInput,
     		setValue,
     		saveData
     	});
@@ -1179,8 +1188,9 @@ var app = (function () {
     		if ('agreed' in $$props) $$invalidate(3, agreed = $$props.agreed);
     		if ('favoriteColor' in $$props) $$invalidate(4, favoriteColor = $$props.favoriteColor);
     		if ('singleFavoriteColor' in $$props) $$invalidate(5, singleFavoriteColor = $$props.singleFavoriteColor);
-    		if ('usernameInput' in $$props) $$invalidate(6, usernameInput = $$props.usernameInput);
-    		if ('someDiv' in $$props) $$invalidate(7, someDiv = $$props.someDiv);
+    		if ('usernameInput' in $$props) $$invalidate(7, usernameInput = $$props.usernameInput);
+    		if ('someDiv' in $$props) $$invalidate(8, someDiv = $$props.someDiv);
+    		if ('customInput' in $$props) $$invalidate(6, customInput = $$props.customInput);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -1211,6 +1221,10 @@ var app = (function () {
     		if ($$self.$$.dirty & /*singleFavoriteColor*/ 32) {
     			console.log(singleFavoriteColor);
     		}
+
+    		if ($$self.$$.dirty & /*customInput*/ 64) {
+    			console.log(customInput);
+    		}
     	};
 
     	return [
@@ -1220,10 +1234,12 @@ var app = (function () {
     		agreed,
     		favoriteColor,
     		singleFavoriteColor,
+    		customInput,
     		usernameInput,
     		someDiv,
     		saveData,
     		custominput_value_binding,
+    		custominput_binding,
     		toggle_chosenOption_binding,
     		input0_input_handler,
     		input1_change_handler,
