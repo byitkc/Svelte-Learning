@@ -1,10 +1,10 @@
 <script>
     import CartItem from "./CartItem.svelte";
-    import cartItems from "./cartStore.js";
+    import CartItems from "./CartStore.js";
 
     let items;
 
-    cartItems.subscribe((its) => {
+    CartItems.subscribe((its) => {
         items = its;
     });
 
