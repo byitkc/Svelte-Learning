@@ -2,6 +2,10 @@
   export let mode;
 </script>
 
+<button class={mode} type="button" on:click>
+  <slot />
+</button>
+
 <style>
   button {
     font: inherit;
@@ -55,7 +59,3 @@
     color: #ccc;
   }
 </style>
-
-<button class={mode} type="button" on:click>
-  <slot />
-</button>
