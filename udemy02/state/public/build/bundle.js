@@ -953,7 +953,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			t = text(/*description*/ ctx[3]);
-    			add_location(p, file$3, 43, 8, 1252);
+    			add_location(p, file$3, 43, 8, 1253);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -1029,11 +1029,11 @@ var app = (function () {
     			t5 = space();
     			if (if_block) if_block.c();
     			attr_dev(h1, "class", "svelte-xkc8vd");
-    			add_location(h1, file$3, 36, 4, 976);
+    			add_location(h1, file$3, 36, 4, 977);
     			attr_dev(h2, "class", "svelte-xkc8vd");
-    			add_location(h2, file$3, 37, 4, 997);
+    			add_location(h2, file$3, 37, 4, 998);
     			attr_dev(li, "class", "svelte-xkc8vd");
-    			add_location(li, file$3, 35, 0, 967);
+    			add_location(li, file$3, 35, 0, 968);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1264,7 +1264,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "No items in cart yet!";
-    			add_location(p, file$2, 42, 12, 919);
+    			add_location(p, file$2, 42, 12, 920);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -1286,7 +1286,7 @@ var app = (function () {
     	return block;
     }
 
-    // (40:8) {#each $CartItems as item (item.id)}
+    // (40:8) {#each $cartItems as item (item.id)}
     function create_each_block$1(key_1, ctx) {
     	let first;
     	let cartitem;
@@ -1317,9 +1317,9 @@ var app = (function () {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
     			const cartitem_changes = {};
-    			if (dirty & /*$CartItems*/ 1) cartitem_changes.id = /*item*/ ctx[2].id;
-    			if (dirty & /*$CartItems*/ 1) cartitem_changes.title = /*item*/ ctx[2].title;
-    			if (dirty & /*$CartItems*/ 1) cartitem_changes.price = /*item*/ ctx[2].price;
+    			if (dirty & /*$cartItems*/ 1) cartitem_changes.id = /*item*/ ctx[2].id;
+    			if (dirty & /*$cartItems*/ 1) cartitem_changes.title = /*item*/ ctx[2].title;
+    			if (dirty & /*$cartItems*/ 1) cartitem_changes.price = /*item*/ ctx[2].price;
     			cartitem.$set(cartitem_changes);
     		},
     		i: function intro(local) {
@@ -1341,7 +1341,7 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(40:8) {#each $CartItems as item (item.id)}",
+    		source: "(40:8) {#each $cartItems as item (item.id)}",
     		ctx
     	});
 
@@ -1356,7 +1356,7 @@ var app = (function () {
     	let each_blocks = [];
     	let each_1_lookup = new Map();
     	let current;
-    	let each_value = /*$CartItems*/ ctx[0];
+    	let each_value = /*$cartItems*/ ctx[0];
     	validate_each_argument(each_value);
     	const get_key = ctx => /*item*/ ctx[2].id;
     	validate_each_keys(ctx, each_value, get_each_context$1, get_key);
@@ -1389,11 +1389,11 @@ var app = (function () {
     				each_1_else.c();
     			}
 
-    			add_location(h1, file$2, 37, 4, 747);
+    			add_location(h1, file$2, 37, 4, 748);
     			attr_dev(ul, "class", "svelte-1rx6pot");
-    			add_location(ul, file$2, 38, 4, 765);
+    			add_location(ul, file$2, 38, 4, 766);
     			attr_dev(section, "class", "svelte-1rx6pot");
-    			add_location(section, file$2, 36, 0, 733);
+    			add_location(section, file$2, 36, 0, 734);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1417,8 +1417,8 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*$CartItems*/ 1) {
-    				each_value = /*$CartItems*/ ctx[0];
+    			if (dirty & /*$cartItems*/ 1) {
+    				each_value = /*$cartItems*/ ctx[0];
     				validate_each_argument(each_value);
     				group_outros();
     				validate_each_keys(ctx, each_value, get_each_context$1, get_key);
@@ -1476,9 +1476,9 @@ var app = (function () {
     }
 
     function instance$3($$self, $$props, $$invalidate) {
-    	let $CartItems;
-    	validate_store(cart, 'CartItems');
-    	component_subscribe($$self, cart, $$value => $$invalidate(0, $CartItems = $$value));
+    	let $cartItems;
+    	validate_store(cart, 'cartItems');
+    	component_subscribe($$self, cart, $$value => $$invalidate(0, $cartItems = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Cart', slots, []);
 
@@ -1506,12 +1506,12 @@ var app = (function () {
     		onDestroy,
     		timer,
     		CartItem,
-    		CartItems: cart,
+    		cartItems: cart,
     		unsubscribe,
-    		$CartItems
+    		$cartItems
     	});
 
-    	return [$CartItems];
+    	return [$cartItems];
     }
 
     class Cart extends SvelteComponentDev {
@@ -1600,15 +1600,15 @@ var app = (function () {
     			div1 = element("div");
     			create_component(button.$$.fragment);
     			attr_dev(h1, "class", "svelte-1a70imu");
-    			add_location(h1, file$1, 27, 8, 578);
+    			add_location(h1, file$1, 27, 8, 579);
     			attr_dev(h2, "class", "svelte-1a70imu");
-    			add_location(h2, file$1, 28, 8, 603);
+    			add_location(h2, file$1, 28, 8, 604);
     			attr_dev(p, "class", "svelte-1a70imu");
-    			add_location(p, file$1, 29, 8, 628);
-    			add_location(div0, file$1, 26, 4, 564);
-    			add_location(div1, file$1, 31, 4, 664);
+    			add_location(p, file$1, 29, 8, 629);
+    			add_location(div0, file$1, 26, 4, 565);
+    			add_location(div1, file$1, 31, 4, 665);
     			attr_dev(div2, "class", "product svelte-1a70imu");
-    			add_location(div2, file$1, 25, 0, 538);
+    			add_location(div2, file$1, 25, 0, 539);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
