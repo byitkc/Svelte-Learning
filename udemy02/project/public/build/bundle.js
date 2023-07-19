@@ -41,6 +41,21 @@ var app = (function () {
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
+    function validate_store(store, name) {
+        if (store != null && typeof store.subscribe !== 'function') {
+            throw new Error(`'${name}' is not a store with a 'subscribe' method`);
+        }
+    }
+    function subscribe(store, ...callbacks) {
+        if (store == null) {
+            return noop;
+        }
+        const unsub = store.subscribe(...callbacks);
+        return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+    }
+    function component_subscribe(component, store, callback) {
+        component.$$.on_destroy.push(subscribe(store, callback));
+    }
     function create_slot(definition, ctx, $$scope, fn) {
         if (definition) {
             const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
@@ -3275,10 +3290,115 @@ var app = (function () {
     	}
     }
 
+    const subscriber_queue = [];
+    /**
+     * Create a `Writable` store that allows both updating and reading by subscription.
+     * @param {*=}value initial value
+     * @param {StartStopNotifier=} start
+     */
+    function writable(value, start = noop) {
+        let stop;
+        const subscribers = new Set();
+        function set(new_value) {
+            if (safe_not_equal(value, new_value)) {
+                value = new_value;
+                if (stop) { // store is ready
+                    const run_queue = !subscriber_queue.length;
+                    for (const subscriber of subscribers) {
+                        subscriber[1]();
+                        subscriber_queue.push(subscriber, value);
+                    }
+                    if (run_queue) {
+                        for (let i = 0; i < subscriber_queue.length; i += 2) {
+                            subscriber_queue[i][0](subscriber_queue[i + 1]);
+                        }
+                        subscriber_queue.length = 0;
+                    }
+                }
+            }
+        }
+        function update(fn) {
+            set(fn(value));
+        }
+        function subscribe(run, invalidate = noop) {
+            const subscriber = [run, invalidate];
+            subscribers.add(subscriber);
+            if (subscribers.size === 1) {
+                stop = start(set) || noop;
+            }
+            run(value);
+            return () => {
+                subscribers.delete(subscriber);
+                if (subscribers.size === 0 && stop) {
+                    stop();
+                    stop = null;
+                }
+            };
+        }
+        return { set, update, subscribe };
+    }
+
+    const meetups = writable([
+        {
+            id: "m1",
+            title: "Coding Bootcamp",
+            subtitle: "Learn to code in 2 hours",
+            description:
+                "In this meetup, we will have some experts that teach you how to code!",
+            imageUrl:
+                "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
+            address: "27th Nerd Road, 32523 New York",
+            contactEmail: "code@test.com",
+            isFavorite: false,
+        },
+        {
+            id: "m2",
+            title: "Swim Together",
+            subtitle: "Let's go for some swimming",
+            description: "We will simply swim some rounds!",
+            imageUrl:
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/40._Schwimmzonen-_und_Mastersmeeting_Enns_2017_100m_Brust_Herren_USC_Traun-9897.jpg/2880px-40._Schwimmzonen-_und_Mastersmeeting_Enns_2017_100m_Brust_Herren_USC_Traun-9897.jpg",
+            address: "27th Nerd Road, 32523 New York",
+            contactEmail: "swim@test.com",
+            isFavorite: false,
+        },
+    ]);
+
+    const customMeetupsStore = {
+        subscribe: meetups.subscribe,
+        addMeetup: (meetupData) => {
+            const newMeetup = {
+                id: Math.random().toString(),
+                ...meetupData,
+                isFavorite: false,
+            };
+            meetups.update(items => {
+                return [newMeetup, ...items]
+            });
+        },
+        toggleFavorite: (id) => {
+            meetups.update(items => {
+                // Find the meetup where the meetup id is equal to the id passed in
+                const updatedMeetup = { ...items.find((m) => m.id === id) };
+                // Now we toggle is "isFavorite" value on the meetup item
+                updatedMeetup.isFavorite = !updatedMeetup.isFavorite;
+                // Find the index of the updated meetup
+                const meetupIndex = items.findIndex((m) => m.id === id);
+                // Create a new array with all the meetups
+                const updatedMeetups = [...items];
+                // Update the meetup at the index with the updated meetup
+                updatedMeetups[meetupIndex] = updatedMeetup;
+                // Override the existing meetups array
+                return updatedMeetups;
+            });
+
+        },
+    };
+
     /* src/App.svelte generated by Svelte v3.59.2 */
     const file = "src/App.svelte";
 
-    // (84:4) <Button on:click={() => (editMode = "add")}>
+    // (47:4) <Button on:click={() => (editMode = "add")}>
     function create_default_slot(ctx) {
     	let t;
 
@@ -3298,14 +3418,14 @@ var app = (function () {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(84:4) <Button on:click={() => (editMode = \\\"add\\\")}>",
+    		source: "(47:4) <Button on:click={() => (editMode = \\\"add\\\")}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (85:4) {#if editMode === "add"}
+    // (48:4) {#if editMode === "add"}
     function create_if_block(ctx) {
     	let editmeetup;
     	let current;
@@ -3340,7 +3460,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(85:4) {#if editMode === \\\"add\\\"}",
+    		source: "(48:4) {#if editMode === \\\"add\\\"}",
     		ctx
     	});
 
@@ -3369,10 +3489,10 @@ var app = (function () {
     		});
 
     	button.$on("click", /*click_handler*/ ctx[5]);
-    	let if_block = /*editMode*/ ctx[1] === "add" && create_if_block(ctx);
+    	let if_block = /*editMode*/ ctx[0] === "add" && create_if_block(ctx);
 
     	meetupgrid = new MeetupGrid({
-    			props: { meetups: /*meetups*/ ctx[0] },
+    			props: { meetups: /*$meetups*/ ctx[1] },
     			$$inline: true
     		});
 
@@ -3391,9 +3511,9 @@ var app = (function () {
     			t3 = space();
     			create_component(meetupgrid.$$.fragment);
     			attr_dev(div, "class", "meetup-controls svelte-yr8rka");
-    			add_location(div, file, 82, 4, 2890);
+    			add_location(div, file, 45, 4, 1183);
     			attr_dev(main, "class", "svelte-yr8rka");
-    			add_location(main, file, 81, 0, 2879);
+    			add_location(main, file, 44, 0, 1172);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -3420,11 +3540,11 @@ var app = (function () {
 
     			button.$set(button_changes);
 
-    			if (/*editMode*/ ctx[1] === "add") {
+    			if (/*editMode*/ ctx[0] === "add") {
     				if (if_block) {
     					if_block.p(ctx, dirty);
 
-    					if (dirty & /*editMode*/ 2) {
+    					if (dirty & /*editMode*/ 1) {
     						transition_in(if_block, 1);
     					}
     				} else {
@@ -3444,7 +3564,7 @@ var app = (function () {
     			}
 
     			const meetupgrid_changes = {};
-    			if (dirty & /*meetups*/ 1) meetupgrid_changes.meetups = /*meetups*/ ctx[0];
+    			if (dirty & /*$meetups*/ 2) meetupgrid_changes.meetups = /*$meetups*/ ctx[1];
     			meetupgrid.$set(meetupgrid_changes);
     		},
     		i: function intro(local) {
@@ -3484,6 +3604,9 @@ var app = (function () {
     }
 
     function instance($$self, $$props, $$invalidate) {
+    	let $meetups;
+    	validate_store(customMeetupsStore, 'meetups');
+    	component_subscribe($$self, customMeetupsStore, $$value => $$invalidate(1, $meetups = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
     	let title = "";
@@ -3492,35 +3615,10 @@ var app = (function () {
     	let address = "";
     	let email = "";
     	let description = "";
-
-    	let meetups = [
-    		{
-    			id: "m1",
-    			title: "Coding Bootcamp",
-    			subtitle: "Learn to code in 2 hours",
-    			description: "In this meetup, we will have some experts that teach you how to code!",
-    			imageUrl: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
-    			address: "27th Nerd Road, 32523 New York",
-    			contactEmail: "code@test.com",
-    			isFavorite: false
-    		},
-    		{
-    			id: "m2",
-    			title: "Swim Together",
-    			subtitle: "Let's go for some swimming",
-    			description: "We will simply swim some rounds!",
-    			imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/40._Schwimmzonen-_und_Mastersmeeting_Enns_2017_100m_Brust_Herren_USC_Traun-9897.jpg/2880px-40._Schwimmzonen-_und_Mastersmeeting_Enns_2017_100m_Brust_Herren_USC_Traun-9897.jpg",
-    			address: "27th Nerd Road, 32523 New York",
-    			contactEmail: "swim@test.com",
-    			isFavorite: false
-    		}
-    	];
-
     	let editMode;
 
     	function addMeetup(event) {
-    		const newMeetup = {
-    			id: Math.random().toString(),
+    		const meetupData = {
     			title: event.detail.title,
     			subtitle: event.detail.subtitle,
     			imageUrl: event.detail.imageUrl,
@@ -3530,35 +3628,17 @@ var app = (function () {
     		};
 
     		// meetups.push(newMeetup); // DOES NOT WORK!
-    		$$invalidate(0, meetups = [newMeetup, ...meetups]);
+    		customMeetupsStore.addMeetup(meetupData);
 
-    		$$invalidate(1, editMode = null);
+    		$$invalidate(0, editMode = null);
     	}
 
     	function toggleFavorite(event) {
-    		const id = event.detail;
-
-    		// Find the meetup where the meetup id is equal to the id passed in
-    		const updatedMeetup = { ...meetups.find(m => m.id === id) };
-
-    		// Now we toggle is "isFavorite" value on the meetup item
-    		updatedMeetup.isFavorite = !updatedMeetup.isFavorite;
-
-    		// Find the index of the updated meetup
-    		const meetupIndex = meetups.findIndex(m => m.id === id);
-
-    		// Create a new array with all the meetups
-    		const updatedMeetups = [...meetups];
-
-    		// Update the meetup at the index with the updated meetup
-    		updatedMeetups[meetupIndex] = updatedMeetup;
-
-    		// Override the existing meetups array
-    		$$invalidate(0, meetups = updatedMeetups);
+    		customMeetupsStore.toggleFavorite(event.detail);
     	}
 
     	function cancelEdit() {
-    		$$invalidate(1, editMode = null);
+    		$$invalidate(0, editMode = null);
     	}
 
     	const writable_props = [];
@@ -3567,7 +3647,7 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<App> was created with unknown prop '${key}'`);
     	});
 
-    	const click_handler = () => $$invalidate(1, editMode = "add");
+    	const click_handler = () => $$invalidate(0, editMode = "add");
 
     	$$self.$capture_state = () => ({
     		Header,
@@ -3575,17 +3655,19 @@ var app = (function () {
     		EditMeetup,
     		TextInput,
     		Button,
+    		meetups: customMeetupsStore,
+    		MeetupItem,
     		title,
     		subtitle,
     		imageUrl,
     		address,
     		email,
     		description,
-    		meetups,
     		editMode,
     		addMeetup,
     		toggleFavorite,
-    		cancelEdit
+    		cancelEdit,
+    		$meetups
     	});
 
     	$$self.$inject_state = $$props => {
@@ -3595,15 +3677,14 @@ var app = (function () {
     		if ('address' in $$props) address = $$props.address;
     		if ('email' in $$props) email = $$props.email;
     		if ('description' in $$props) description = $$props.description;
-    		if ('meetups' in $$props) $$invalidate(0, meetups = $$props.meetups);
-    		if ('editMode' in $$props) $$invalidate(1, editMode = $$props.editMode);
+    		if ('editMode' in $$props) $$invalidate(0, editMode = $$props.editMode);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [meetups, editMode, addMeetup, toggleFavorite, cancelEdit, click_handler];
+    	return [editMode, $meetups, addMeetup, toggleFavorite, cancelEdit, click_handler];
     }
 
     class App extends SvelteComponentDev {
