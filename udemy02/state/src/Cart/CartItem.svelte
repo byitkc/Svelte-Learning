@@ -1,5 +1,5 @@
 <script>
-    import CartItems from "./cart-store.js";
+    import cartItems from "./cart-store.js";
     import { products } from "../Products/products-store.js";
     import Button from "../UI/Button.svelte";
 
@@ -27,9 +27,7 @@
     }
 
     function removeFromCart() {
-        CartItems.update((items) => {
-            return items.filter((i) => i.id !== id);
-        });
+        cartItems.removeItem(id);
     }
 </script>
 

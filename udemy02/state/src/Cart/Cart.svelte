@@ -3,10 +3,18 @@
     import { timer } from "../UI/timer-store.js";
     import CartItem from "./CartItem.svelte";
     import cartItems from "./cart-store.js";
+    import { subscribe } from "svelte/internal";
 
-    const unsubscribe = timer.subscribe((count) => {
-        console.log("Cart: " + count);
+    let items;
+
+    cartItems.subscribe((its) => {
+        items = its;
     });
+    console.log(items);
+
+    // const unsubscribe = timer.subscribe((count) => {
+    //     console.log("Cart: " + count);
+    // });
 
     // let items;
 
@@ -14,11 +22,11 @@
     //     items = its;
     // });
 
-    onDestroy(() => {
-        if (unsubscribe) {
-            unsubscribe();
-        }
-    });
+    // onDestroy(() => {
+    //     if (unsubscribe) {
+    //         unsubscribe();
+    //     }
+    // });
 
     // export let items = [
     //   {
@@ -32,6 +40,7 @@
     //     price: 9.99
     //   }
     // ];
+    console.log(cartItems);
 </script>
 
 <section>
