@@ -13,6 +13,8 @@
     export let email;
     export let isFavorite;
 
+    const dispatch = createEventDispatcher();
+
     function toggleFavorite() {
         meetups.toggleFavorite(id);
     }
@@ -41,12 +43,13 @@
             mode="outline"
             color={isFavorite ? null : "success"}
             type="button"
-            caption={isFavorite ? "Unfavorite" : "Favorite"}
             on:click={toggleFavorite}
         >
             {isFavorite ? "Unfavorite" : "Favorite"}
         </Button>
-        <Button type="button">Show Details</Button>
+        <Button type="button" on:click={() => dispatch("showdetails", id)}>
+            Show Details
+        </Button>
     </footer>
 </article>
 
